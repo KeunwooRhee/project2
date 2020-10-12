@@ -17,10 +17,12 @@ def create_app(test_config=None):
   @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
   CORS(app, resources={r"/api/*": {"origins": "*"}})
-  #CORS(app)
 
   '''
   @TODO: Use the after_request decorator to set Access-Control-Allow
+  '''
+  '''
+  This web page allows 'GET', 'POST', 'DELETE' methods.
   '''
   @app.after_request
   def after_request(response):
@@ -32,6 +34,18 @@ def create_app(test_config=None):
   @TODO: 
   Create an endpoint to handle GET requests 
   for all available categories.
+  '''
+  '''
+  GET '/categories'
+    - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+    - Request Arguments: None
+    - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs
+      {'1' : "Science",
+       '2' : "Art",
+       '3' : "Geography",
+       '4' : "History",
+       '5' : "Entertainment",
+       '6' : "Sports"}
   '''
   @app.route('/categories', methods=['GET'])
   def get_all_categories():
@@ -59,46 +73,34 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
+  '''
+  GET '/questions'
+    - Fetches a dictionary of categories, a list of questions, number of total questions, current category
+    - Request Arguments: None or 'page'
+      - 'page' is an integer number.  
+      - None is equal to 'page=1'.
+    - Returns: An object with four keys,
+      - 'categories' that contains an object of id: category_string key:value pairs
+      - 'current_category' that is an id of category. In this route, 'current_category' is 'None'. 'None' is a default category.
+      - 'questions' that contains a list of question objects
+        {
+          "answer": "Maya Angelou", 
+          "category": 4, 
+          "difficulty": 2, 
+          "id": 5, 
+          "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        }
+      - 'total_questions' that is the number of total questions
+    - Error: 404, if the value of the 'page' is beyond the number of total pages. 
+  '''
   @app.route('/questions', methods=['GET'])
   def get_questions():
-    '''
-    try:
-      page = request.args.get('page', 1, type=int)
-      start = (page -1) * QUESTIONS_PER_PAGE
-      end = start + QUESTIONS_PER_PAGE
     
-      current_categories = None
-
-      questions = Question.query.all()
-      formatted_questions = [question.format() for question in questions]
-    
-      categories = Category.query.all()
-    
-      formatted_categories = {}
-      
-      for category in categories:
-        formatted_categories[category.id] = category.type 
-
-      if len(formatted_questions[start:end]) == 0:
-        abort(404)
-      else:  
-        return jsonify({
-          'success': True,
-          'questions': formatted_questions[start:end],
-          'total_questions': len(formatted_questions),
-          'categories': formatted_categories,
-          'current_category': current_categories
-        })
-    
-    except:
-      abort(422)
-    '''
     page = request.args.get('page', 1, type=int)
     start = (page -1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
   
     current_categories = None
-    #current_categories = 0
 
     questions = Question.query.all()
     formatted_questions = [question.format() for question in questions]
@@ -210,13 +212,13 @@ def create_app(test_config=None):
   '''
   @app.route('/categories/<int:category_id>', methods=['GET'])
   def get_categories(category_id):
-    categories = Category.query.filter_by(id=category_id).all()
+    #categories = Category.query.filter_by(id=category_id).all()
     result = Category.query.filter_by(id=category_id).one_or_none()
   
     if result is None:
       abort(404)
-    else: 
-      formatted_categories = [category.format() for category in categories]
+    #else: 
+    #  formatted_categories = [category.format() for category in categories]
   
     questions = Question.query.filter_by(category=category_id).all()
     #print(questions)
