@@ -95,6 +95,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(question)
     
+    def test_405_put_questions(self):
+        put_question = {
+            "question":"new question4",
+            "answer":"OK",
+            "difficulty":2,
+            "category":"6"
+        }
+
+        res = self.client().put('/add', json=put_question)
+        data = json.loads(res.data)
+
+        question = Question.query.filter_by(question="new question4", answer="OK", difficulty=2, category=6).all()
+
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'],"method not allowed")
+    
     def test_search_questions(self):
         search_term1 = {
             "searchTerm":"title"
