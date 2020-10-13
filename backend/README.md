@@ -87,6 +87,107 @@ GET '/categories'
 '5' : "Entertainment",
 '6' : "Sports"}
 
+GET '/questions'
+- Fetches a dictionary of categories, a list of questions, number of total questions, current category
+- Request Arguments: None or 'page'
+- 'page' is an integer number.  
+- None is equal to 'page=1'.
+- Returns: An object with four keys,
+- 'categories' that contains an object of id: category_string key:value pairs
+- 'current_category' that is an id of category. In this route, 'current_category' is 'None'. 'None' is a default category.
+- 'questions' that contains a list of question objects
+{
+"answer": "Maya Angelou", 
+"category": 4, 
+"difficulty": 2, 
+"id": 5, 
+"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+}
+- 'total_questions' that is the number of total questions
+- Error: 404, if the value of the 'page' is beyond the number of total pages. 
+
+DELETE '/questions/<int:question_id>'
+- Deletes a question of id, 'id' is 'question_id'. 
+- Request Arguments: None
+- Returns: An object of the deleted question
+{
+"answer": "Maya Angelou", 
+"category": 4, 
+"difficulty": 2, 
+"id": 5, 
+"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+}
+- Error: 422, if there is no question of 'question_id'. It cannot delete a question. 
+
+POST '/add'
+- Adds a question 
+- Request Arguments: question, answer, category, difficulty
+- Returns: An object of the newly added question
+{
+"answer": "Maya Angelou", 
+"category": 4, 
+"difficulty": 2, 
+"id": 5, 
+"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+}
+- Error: 400, if the key of the request argument is wrong. e.g., 'questio'
+
+POST '/questions'
+- Searches questions that include a 'searchTerm' 
+- Request Arguments: searchTerm, a terminology to search.
+- Returns: A list of objects, questions. e.g., if 'searchTerm' is 'name',
+[
+{
+"answer": "Muhammad Ali",
+"category": 4,
+"difficulty": 1,
+"id": 9,
+"question": "What boxer's original name is Cassius Clay?"
+},
+{
+"answer": "Brazil",
+"category": 6,
+"difficulty": 3,
+"id": 10,
+"question": "Which is the only team to play in every soccer World Cup tournament?"
+}
+]
+- Error: 400, if the key of the request argument is wrong. e.g., 'searchterm'
+
+GET '/categories/<int:category_id>'
+- Fetches a list of questions and the number of total questions in the current category
+- Request Arguments: None
+- Returns: An object with three keys,
+- 'current_category' that is an id of the current category
+- 'questions' that contains a list of question objects
+{
+"answer": "Maya Angelou", 
+"category": 4, 
+"difficulty": 2, 
+"id": 5, 
+"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+}
+- 'total_questions' that is the number of total questions in the current category
+- Error: 404, there is no category of 'category_id' 
+
+POST '/play'
+- Fetches a question to play the quiz
+- Request Arguments: quiz_category, previous_questions
+- 'quiz_category' is the category of the questions to play the quiz in this time. 
+If the value of 'quiz_category' is 0, it means 'All' categories.
+- 'previous_questions' are the questions already played.
+- Returns: An object with three keys,
+- 'previous_questions' are the quesitons already played.
+- 'category' is the category of the questions to play the quiz in this time.
+- 'question' is a random quesiton to play. It is not one of the previous questions.
+{
+"answer": "Maya Angelou", 
+"category": 4, 
+"difficulty": 2, 
+"id": 5, 
+"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+} 
+- Error: 422, there is no question to play
 ```
 
 

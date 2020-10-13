@@ -53,7 +53,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['current_category'],None)
 
     def test_404_get_questions_beyond_valid_page(self):
-        res = self.client().get('/questions?page=0', json={'rating':1})
+        res = self.client().get('/questions?page=0')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
